@@ -2,7 +2,6 @@ package carpet.mixins.rule.carefulBreak;
 
 import carpet.CarpetSettings;
 import carpet.helpers.CarefulBreakHelper;
-import carpet.log.framework.LoggerRegistry;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
@@ -27,11 +26,15 @@ public abstract class BlockMixin {
         )
     )
     private static void doCarefulBreakItemCollide(World world, BlockPos pos, ItemStack stack, CallbackInfo ci, @Local ItemEntity item) {
-        if (CarpetSettings.carefulBreak) {
+        if (!CarpetSettings.carefulBreak.equals("off")) {
             ServerPlayerEntity player = CarefulBreakHelper.miningPlayer.get();
-            if (player != null && player.isSneaking() && LoggerRegistry.getPlayerSubscriptions(player.getName()).containsKey("carefulBreak")) {
-                item.setNoPickUpDelay();
-                item.onPlayerCollision(player);
+            if (player != null) {
+                boolean shouldPickup = CarpetSettings.carefulBreak.equals("always") || 
+                    (CarpetSettings.carefulBreak.equals("sneak") && player.isSneaking());
+                if (shouldPickup) {
+                    item.setNoPickUpDelay();
+                    item.onPlayerCollision(player);
+                }
             }
         }
     }

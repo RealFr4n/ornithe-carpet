@@ -32,7 +32,7 @@ public abstract class ServerPlayerInteractionManagerMixin {
     private boolean setCarefulBreakOnMinePlayer(ServerPlayerInteractionManager instance, BlockPos pos, Operation<Boolean> original) {
         // allows picking up blocks that break in beforeMinedByPlayer (Shulker Boxes, Beds, Doors, etc)
         // and blocks that break off (torches, rails, etc)
-        if (CarpetSettings.carefulBreak) {
+        if (!CarpetSettings.carefulBreak.equals("off")) {
             try {
                 CarefulBreakHelper.miningPlayer.set(this.player);
                 return original.call(instance, pos);
@@ -53,7 +53,7 @@ public abstract class ServerPlayerInteractionManagerMixin {
     )
     private void setCarefulBreakAfterMinePlayer(Block instance, World world, PlayerEntity player, BlockPos pos, BlockState state,
                                                 BlockEntity blockEntity, ItemStack stack, Operation<Void> original) {
-        if (CarpetSettings.carefulBreak) {
+        if (!CarpetSettings.carefulBreak.equals("off")) {
             try {
                 CarefulBreakHelper.miningPlayer.set(this.player);
                 original.call(instance, world, player, pos, state, blockEntity, stack);

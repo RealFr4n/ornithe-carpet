@@ -399,6 +399,15 @@ public class CarpetSettings {
     @Rule(desc = "Fix client-side ghost blocks when instant mining, like in 1.13", categories = BUGFIX)
     public static boolean miningGhostBlocksFix = false;
 
+    @Rule(desc = "Fixes updates suppression causing server crashes", categories = BUGFIX)
+    public static boolean updateSuppressionCrashFix = false;
+
+    @Rule(desc = "Makes end stone instamineable with Efficiency V and Haste II", categories = FEATURE)
+    public static boolean instamineEndstone = false;
+
+    @Rule(desc = "Mobs that would despawn immediately are not placed in the world, reducing network lag", categories = OPTIMIZATION)
+    public static boolean optimizedDespawnRange = false;
+
     @Rule(desc = "Prevents players from rubberbanding when moving too fast", categories = SURVIVAL)
     public static boolean antiCheatSpeed = false;
 
@@ -435,8 +444,12 @@ public class CarpetSettings {
         }
     }
 
-    @Rule(desc = "Mining blocks while sneaking and subscribed to /log carefulBreak will place them in your inventory ", categories = FEATURE)
-    public static boolean carefulBreak = false;
+    @Rule(
+            desc = "Mining blocks places them in your inventory. 'sneak' only while sneaking, 'always' regardless",
+            categories = FEATURE,
+            options = {"off", "sneak", "always"}
+    )
+    public static String carefulBreak = "off";
 
     @Rule(desc = "Pickaxe mines Piston and Glass faster, hoe mines Sponge, Hay Bale, Leaves, Nether Wart blocks faster and takes damage.",
         extra = {
@@ -476,4 +489,26 @@ public class CarpetSettings {
 
     @Rule(desc = "Enables /log command to monitor events via chat and overlays", categories = COMMAND)
     public static String commandLog = "true";
+
+    @Rule(
+            desc = "Enables /view command to view player inventories and ender chests",
+            extra = {
+                    "Use /view inv <player> to view inventory",
+                    "Use /view echest <player> to view ender chest"
+            },
+            categories = {COMMAND, FEATURE},
+            options = {"true", "false", "ops", "0", "2", "4"}
+    )
+    public static String commandInventory = "ops";
+
+    @Rule(
+            desc = "Enables /sb command to create scoreboard objectives from vanilla stats",
+            extra = {
+                    "Use /sb <stat type>.<stat target> to create objective",
+                    "Use /sb clear <slot> to clear display"
+            },
+            categories = {COMMAND, FEATURE},
+            options = {"true", "false", "ops", "0", "2", "4"}
+    )
+    public static String scoreboardStats = "ops";
 }
